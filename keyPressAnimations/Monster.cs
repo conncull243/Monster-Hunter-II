@@ -11,6 +11,14 @@ namespace keyPressAnimations
         public int x, y, size, speed;
         public Image[] monster = new Image[4];
 
+        /// <summary>
+        /// Monster constructor method
+        /// </summary>
+        /// <param name="_x">start x location of monster</param>
+        /// <param name="_y">start y location of montster</param>
+        /// <param name="_size">start size of monster</param>
+        /// <param name="_speed">start speed of monster</param>
+        /// <param name="_monster">images to be used for drawing monster</param>
         public Monster (int _x, int _y, int _size, int _speed, Image[] _monster)
         {   
             x = _x;
