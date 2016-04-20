@@ -20,6 +20,7 @@ namespace keyPressAnimations
             monster = _monster;
         }
 
+        //monster movement created
         public void move (Monster m, string direction)
         {
             if (direction == "up")
@@ -43,6 +44,7 @@ namespace keyPressAnimations
             }
         }
 
+        //checks for collision between monster and bullets
         public bool collision (Monster m, Bullet b)
         {
             Rectangle mRec = new Rectangle(m.x, m.y, m.size, m.size);

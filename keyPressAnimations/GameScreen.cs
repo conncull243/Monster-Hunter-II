@@ -26,6 +26,7 @@ namespace keyPressAnimations
 
 
         Player character;
+        Monster enemy;
             
         public GameScreen()
         {
@@ -43,8 +44,8 @@ namespace keyPressAnimations
             gameTimer.Enabled = true;
             gameTimer.Start();
 
-            character = new Player(40, 50, 20, 3, hero);
-            Monster enemy = new Monster(100, 200, 50, 2, monster);
+            character = new Player(40, 50, 20, 4, hero);
+            Monster enemy = new Monster(100, 200, 50, 1, monster);
             monsterList.Add(enemy);
 
             this.Focus();
@@ -130,7 +131,7 @@ namespace keyPressAnimations
         private void gameTimer_Tick(object sender, EventArgs e)
         {
             //checks to see if any keys have been pressed and adjusts the X or Y value
-            //for the rectangle appropriately
+            //for the character appropriately
             if (leftArrowDown == true)
             {
                 character.move(character, "left");
@@ -153,46 +154,67 @@ namespace keyPressAnimations
             }
             if (spaceBarDown == true && direction == 0)
             {
-                Bullet b = new Bullet(character.x, character.y, 10, 20, "down");
+                Bullet b = new Bullet(character.x + (1/2 * character.size), character.y + (1/2 * character.size), 10, 15, "down");
                 bulletList.Add(b);
             }
             if (spaceBarDown == true && direction == 1)
             {
-                Bullet b = new Bullet(character.x, character.y, 10, 20, "right");
+                Bullet b = new Bullet(character.x + (1 / 2 * character.size), character.y + (1 / 2 * character.size), 10, 15, "right");
                 bulletList.Add(b);
             }
             if (spaceBarDown == true && direction == 2)
             {
-                Bullet b = new Bullet(character.x, character.y, 10, 20, "up");
+                Bullet b = new Bullet(character.x + (1 / 2 * character.size), character.y + (1 / 2 * character.size), 10, 15, "up");
                 bulletList.Add(b);
             }
             if (spaceBarDown == true && direction == 3)
             {
-                Bullet b = new Bullet(character.x, character.y, 10, 20, "left");
+                Bullet b = new Bullet(character.x + (1 / 2 * character.size), character.y + (1 / 2 * character.size), 10, 15, "left");
                 bulletList.Add(b);
             }
 
-            //refresh the screen, which causes the Form1_Paint method to run
-            Refresh();
-
-        }
-
-
-        private void Form1_Paint(object sender, PaintEventArgs e)
-        {
-            //draw character to screen
-            e.Graphics.DrawImage(character.hero[direction], character.x, character.y);
-            
+            //monster movement
             foreach (Monster m in monsterList)
             {
-                e.Graphics.DrawImage(m.monster[0], m.x, m.y, m.size, m.size);
+                if (character.x > m.x)
+                {
+                    m.move(m, "right");
+                }
+                else if (character.x < m.x)
+                {
+                    m.move(m, "left");
+                }
+                if (character.y > m.y)
+                {
+                    m.move(m, "down");
+                }
+                else if (character.y < m.y)
+                {
+                    m.move(m, "up");
+                }
             }
 
+            //bullet movement
             foreach (Bullet b in bulletList)
             {
-                e.Graphics.DrawRectangle(drawPen, character.x, character.y, 5, 5);
+                if (b.direction == "up")
+                {
+                    b.move(b);
+                }
+                if (b.direction == "down")
+                {
+                    b.move(b);
+                }
+                if (b.direction == "left")
+                {
+                    b.move(b);
+                }
+                if (b.direction == "right")
+                {
+                    b.move(b);
+                }
             }
-
+            //check for collision, end program if it happens between player + monster
             foreach (Monster m in monsterList)
             {
                 if (character.collision(character, m))
@@ -205,6 +227,38 @@ namespace keyPressAnimations
                     es.BringToFront();
                     break;
                 }
+            }
+
+            //bullet and monster collision... work in progress
+            //foreach (Bullet b in bulletList)
+            //{
+            //    if (enemy.collision(m:enemy, b:b))
+            //    {
+            //        monsterList.Remove(enemy);
+            //        monsterList.Add(enemy);
+            //    }
+            //}
+
+
+            //refresh the screen, which causes the Form1_Paint method to run
+            Refresh();
+
+        }
+
+        //paints all objects to screen
+        private void Form1_Paint(object sender, PaintEventArgs e)
+        {
+            //draw character to screen
+            e.Graphics.DrawImage(character.hero[direction], character.x, character.y);
+            
+            foreach (Monster m in monsterList)
+            {
+                e.Graphics.DrawImage(m.monster[0], m.x, m.y, m.size, m.size);
+            }
+
+            foreach (Bullet b in bulletList)
+            {
+                e.Graphics.DrawRectangle(drawPen, b.x, b.y, 5, 5);
             }
         }
     }

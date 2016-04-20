@@ -19,6 +19,7 @@ namespace keyPressAnimations
             direction = _direction;
         }
 
+        //bullet movement created
         public void move (Bullet b)
         {
             if (b.direction == "up")

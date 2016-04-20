@@ -21,6 +21,7 @@ namespace keyPressAnimations
             hero = _hero;
         }
 
+        //player movement created
         public void move(Player p, string direction)
         {
             if (direction == "up")
@@ -44,6 +45,7 @@ namespace keyPressAnimations
             }
         }
 
+        //checks for collision between player and monster
         public bool collision(Player p, Monster m)
         {
             Rectangle pRec = new Rectangle(p.x, p.y, p.size, p.size);
